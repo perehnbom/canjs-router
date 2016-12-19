@@ -11,5 +11,10 @@ module.exports = {
       inline: true,
       hot : true
     },
-    devtool: 'inline-source-map'
+    devtool: 'inline-source-map',
+    resolve: {
+      alias : {
+        "framework7" : "framework7/dist/js/framework7"
+      }
+    }
 }

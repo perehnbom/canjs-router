@@ -26,7 +26,7 @@ var AppControl = can.Control.extend({
     this.vm = el.viewModel();
     this.vm.title = 'My App';
 
-    el.html(mainTemplate(this.vm));
+    el.append(mainTemplate(this.vm));
 
     this.appRouter = new AppRouter('#page-container', {
       defaultRoute : 'viewitems',
@@ -42,4 +42,4 @@ var AppControl = can.Control.extend({
 });
 
 
-new AppControl('#main');
+new AppControl('body');

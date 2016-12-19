@@ -1,7 +1,10 @@
 require('can-control');
+require('framework7');
+
 var can = require('can-util/namespace'),
   $ = require('can-jquery'),
-  Route = require('route-parser');
+  Route = require('route-parser'),
+  pagebaseTemplate = can.stache(require('raw-loader!./pagebase.html'));
 
 var AppRouter = can.Control.extend({
   defaults : {
@@ -10,19 +13,49 @@ var AppRouter = can.Control.extend({
 },{
   init : function(el,ev){
     this.initRoutes();
+    this.initFM7();
+  },
+
+  initFM7 : function(){
+    this.FM7App = new Framework7({
+      ajaxLinks : '.link',
+      swipeBackPage : false,
+      debug : true,
+      sortable:false,
+      smartSelectOpen : false,
+      modalTitle : ' '
+    });
+
+    this.mainView = this.FM7App.addView('.view-main', {
+      dynamicNavbar: true,
+      domCache : true
+    });
   },
   initRoutes : function(){
     initRoutesByPages(this);
     initRoutes(this);
   },
   openPage : function(Page, params){
-    var pageContainer = this.element;
+    var self = this;
 
-    pageContainer.find('page').remove();
-    var page = $('<page></page>');
-    pageContainer.append(page);
-    var pageControl = new Page(pageContainer.find('page:last-child')[0], params);
-    return pageControl.render();
+
+    var pageConfig = {
+      content : pagebaseTemplate({})
+    }
+    self.mainView.allowPageChange = true;
+    var $page = $(pageConfig.content).find('.page-content');
+
+    var controller = new Page($page, params);
+    return controller._preRenderPhase().then(function(){
+      $page.html(controller.view(controller.vm));
+      self.mainView.url = "";
+      self.mainView.router.loadPage( pageConfig);
+    });
+  },
+
+  '.page pageBeforeInit' : function(el,ev){
+    console.log('pageBeforeInit')
+    var page = ev.detail.page;
   },
 
   openPageByHash : function(hash){
@@ -38,7 +71,7 @@ var AppRouter = can.Control.extend({
     }
     return false;
   },
-  
+
   '{window} hashchange' : function(el,ev){
     if(!this.openPageByHash()){
       console.error('page could not be found for hash ' + window.location.hash);
