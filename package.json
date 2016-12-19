@@ -1,0 +1,34 @@
+{
+  "name": "canjs-router",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "./node_modules/.bin/webpack",
+    "develop": "./node_modules/.bin/webpack-dev-server --hot --port 8091"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/perehnbom/tryout-canjs3.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/perehnbom/tryout-canjs3/issues"
+  },
+  "homepage": "https://github.com/perehnbom/tryout-canjs3#readme",
+  "dependencies": {
+    "can":"^3.2.2",
+    "can-map-define": "^3.0.1",
+    "can-connect": "^1.0.15",
+    "raw-loader": "^0.5.1",
+    "route-parser": "0.0.5",
+    "lodash": "latest",
+    "framework7": "latest"
+  },
+  "devDependencies": {
+    "webpack": "2.1.0-beta.12",
+    "webpack-dev-server": "^1.16.2"
+  }
+}
