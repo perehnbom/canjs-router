@@ -38,7 +38,6 @@ var AppRouter = can.Control.extend({
   openPage : function(Page, params){
     var self = this;
 
-
     var pageConfig = {
       content : pagebaseTemplate({})
     }
@@ -47,7 +46,8 @@ var AppRouter = can.Control.extend({
 
     var controller = new Page($page, params);
     return controller._preRenderPhase().then(function(){
-      $page.html(controller.view(controller.vm));
+      return controller._postRenderPhase();      
+    }).then(function(){
       self.mainView.url = "";
       self.mainView.router.loadPage( pageConfig);
     });
